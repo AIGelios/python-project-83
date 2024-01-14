@@ -1,2 +1,4 @@
+import page_analyzer
+
 def test_nothing():
-    assert True
+    assert page_analyzer.app
