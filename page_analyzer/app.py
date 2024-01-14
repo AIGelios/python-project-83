@@ -9,3 +9,5 @@ def homepage():
     return render_template('index.html')
 
 
+def for_test():
+    return True
