@@ -8,15 +8,13 @@ test-coverage:
 	poetry run pytest --cov=page_analyzer --cov-report xml
 
 lint:
-	poetry run flake8 hexlet_python_package
+	poetry run flake8 page_analyzer
 
 selfcheck:
 	poetry check
 
-check: selfcheck test lint
+check: selfcheck test-coverage lint
 
-build: check
-	poetry build
 
 .PHONY: install test lint selfcheck check build
 
@@ -32,3 +30,14 @@ start:
 	poetry run gunicorn -w 5 -b 0.0.0.0:$(PORT) page_analyzer:app
 
 
+db-status:
+	sudo service postgresql status
+
+db-start:
+	sudo service postgresql start
+
+db-stop:
+	sudo service postgresql stop
+
+build:
+	./build.sh
