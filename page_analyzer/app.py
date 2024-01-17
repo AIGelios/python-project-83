@@ -24,8 +24,8 @@ def index():
 
 @app.get('/urls')
 def get_urls():
-
-    with open('./db_queries/get_urls.sql') as file:
+    path = './page_analyzer/db_queries/get_urls.sql'
+    with open(path) as file:
         query = file.read()
 
     db_connection = psycopg2.connect(
