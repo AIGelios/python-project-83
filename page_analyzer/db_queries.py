@@ -3,7 +3,7 @@ from .service_module import get_current_timestamp
 
 def get_all_urls_query():
     return """SELECT
-        urls.id, urls.name
+        id, name
         FROM urls
         ORDER BY urls.id;
     """
