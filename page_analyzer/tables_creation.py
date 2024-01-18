@@ -27,9 +27,9 @@ CREATE TABLE url_checks (
     created_at timestamp
 );
 """
-
-with connect(DATABASE_URL) as connection:
-    with connection.cursor() as cursor:
-        cursor.execute(query)
+if DATABASE_URL:
+    with connect(DATABASE_URL) as connection:
+        with connection.cursor() as cursor:
+            cursor.execute(query)
 
 print('Таблицы успешно созданы')
