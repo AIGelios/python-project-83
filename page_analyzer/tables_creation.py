@@ -31,5 +31,9 @@ if DATABASE_URL:
     with connect(DATABASE_URL) as connection:
         with connection.cursor() as cursor:
             cursor.execute(query)
-
-print('Таблицы успешно созданы')
+            print('Connection to db - success')
+            print('Tables succesfully created')
+else:
+    print('Connection to db - failure')
+    print('Environment variable DATABASE_URL not found')
+    
