@@ -13,6 +13,9 @@ from psycopg2 import connect
 from psycopg2.extras import NamedTupleCursor
 from psycopg2.errors import UniqueViolation
 
+from requests import get as make_http_request
+from requests.exceptions import RequestException
+
 from .url_processing import normalize_url, validate_url  # noqa
 from .service_module import (
     error_alert,
@@ -27,6 +30,7 @@ from .db_queries import (
     get_url_data_by_id_query,
     add_check_query,
     get_checks_by_url_id,
+    get_url_by_id_query,
 )
 
 app = Flask(__name__)
@@ -132,18 +136,22 @@ def get_url(id):
 
 @app.post('/urls/<int:id>/checks')
 def add_check(id):
-
-    h1 = ''
-    title = ''
-    description = ''
-    status_code = 200
-
+    query = get_url_by_id_query(id)
+    with db_connection:
+        cursor = db_connection.cursor()
+        cursor.execute(query)
+        url = cursor.fetchone()[0]
+    try:
+        response = make_http_request(url, timeout=(3.05, 10))
+        status_code = response.status_code
+        done_alert('Страница успешно проверена')
+    except RequestException:
+        error_alert('Произошла ошибка при проверке')
+        return redirect(url_for('get_url', id=id))
+    h1, title, description = '', '', ''
     query = add_check_query(id, h1, title, description, status_code)
-
     with db_connection:
         cursor = db_connection.cursor()
         cursor.execute(query)
         cursor.close()
-        done_alert('Страница успешно проверена')
-
     return redirect(url_for('get_url', id=id))
