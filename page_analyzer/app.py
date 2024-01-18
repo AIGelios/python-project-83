@@ -64,10 +64,8 @@ def get_urls():
 
 @app.post('/urls')
 def add_url():
-
     url_string = request.form.get('url')
     errors = validate_url(url_string)
-
     if errors:
         for error in errors:
             error_alert(error)
@@ -76,9 +74,7 @@ def add_url():
             url=url_string,
             messages=get_alerts(),
         )
-
     url = normalize_url(url_string)
-
     try:
         query = add_url_query(url)
         with db_connection:
@@ -86,10 +82,8 @@ def add_url():
             cursor.execute(query)
             cursor.close()
             done_alert('Страница успешно добавлена')
-
     except UniqueViolation:
         info_alert('Страница уже существует')
-
     query = get_id_by_url_query(url)
     with db_connection:
         cursor = db_connection.cursor()
@@ -101,27 +95,21 @@ def add_url():
 
 @app.get('/urls/<int:id>')
 def get_url(id):
-
     query = get_url_data_by_id_query(id)
-
     with db_connection:
         cursor = db_connection.cursor()
         cursor.execute(query)
         matched = cursor.fetchone()
         cursor.close()
-
     if matched:
         url_id, url_name, created_at = matched
         created_at = str(created_at.date())
-
         query = get_checks_by_url_id(id)
-
         with db_connection:
             cursor = db_connection.cursor(cursor_factory=NamedTupleCursor)
             cursor.execute(query)
             checks = cursor.fetchall()
             cursor.close()
-
         return render_template(
             'url.html',
             url_id=url_id,
@@ -130,7 +118,6 @@ def get_url(id):
             checks=checks,
             messages=get_alerts(),
         )
-
     return render_template('page_not_found.html'), 404
 
 
