@@ -43,6 +43,4 @@ create-tables:
 	poetry run 
 
 build:
-	make install
-	poetry run python3 page_analyzer/tables_creation.py
-
+	./build.sh
