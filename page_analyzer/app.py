@@ -22,6 +22,7 @@ from .service_module import (
     info_alert,
     done_alert,
     get_alerts,
+    get_seo_data,
 )
 from .db_queries import (
     get_all_urls_query,
@@ -130,12 +131,13 @@ def add_check(id):
         url = cursor.fetchone()[0]
     try:
         response = make_http_request(url, timeout=(3.05, 10))
+        response.raise_for_status()
         status_code = response.status_code
         done_alert('Страница успешно проверена')
     except RequestException:
         error_alert('Произошла ошибка при проверке')
         return redirect(url_for('get_url', id=id))
-    h1, title, description = '', '', ''
+    h1, title, description = get_seo_data(response.text)
     query = add_check_query(id, h1, title, description, status_code)
     with db_connection:
         cursor = db_connection.cursor()
