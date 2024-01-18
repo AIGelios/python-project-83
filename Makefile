@@ -13,7 +13,7 @@ lint:
 selfcheck:
 	poetry check
 
-check: selfcheck test test-coverage lint
+check: selfcheck test lint
 
 
 .PHONY: install test lint selfcheck check build

@@ -1,4 +1,10 @@
-from page_analyzer.url_processing import *
+from page_analyzer.url_processing import (
+    error_message_1,
+    error_message_2,
+    error_message_3,
+    normalize_url,
+    validate_url,
+)
 
 
 sample1 = 'https://e1.ru/news/politics'
