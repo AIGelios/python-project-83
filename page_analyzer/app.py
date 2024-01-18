@@ -89,7 +89,7 @@ def add_url():
         cursor.execute(query)
         id = cursor.fetchone()[0]
         cursor.close()
-    return redirect(url_for('get_url'), id=id)
+    return redirect(url_for('get_url', id=id))
 
 
 @app.get('/urls/<int:id>')
