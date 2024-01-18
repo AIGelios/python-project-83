@@ -32,7 +32,8 @@ app = Flask(__name__)
 load_dotenv()
 app.secret_key = os.getenv('SESSION_KEY')
 DATABASE_URL = os.getenv('DATABASE_URL')
-db_connection = connect(DATABASE_URL)
+if DATABASE_URL:
+    db_connection = connect(DATABASE_URL)
 
 
 @app.route('/')
