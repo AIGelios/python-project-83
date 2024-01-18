@@ -15,7 +15,8 @@ error_message_3 = 'URL превышает 255 символов'
 def validate_url(url_string: str) -> list:
     if url_string == '':
         return [error_message_1]
-    if not is_valid(url_string):
-        return [error_message_2]
     if len(url_string) > 255:
         return [error_message_3]
+    if not is_valid(url_string):
+        return [error_message_2]
+    return []

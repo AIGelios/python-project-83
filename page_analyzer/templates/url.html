@@ -1,0 +1,23 @@
+{% extends "index.html" %}
+{% block content %}
+<h1>Сайт: {{ url_name }}</h1>
+<div class="table-responsive">
+  <table class="table table-bordered table-hover text-nowrap" data-test="url">
+    <tbody>
+        <tr>
+            <td>ID</td>
+            <td>{{ url_id }}</td>
+        </tr>
+        <tr>
+            <td>Имя</td>
+            <td>{{ url_name }}</td>
+        </tr>
+        <tr>
+            <td>Дата создания</td>
+            <td>{{ created_at }}</td>
+        </tr>
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}
