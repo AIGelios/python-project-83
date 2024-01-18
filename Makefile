@@ -39,5 +39,10 @@ db-start:
 db-stop:
 	sudo service postgresql stop
 
+create-tables:
+	poetry run 
+
 build:
-	./build.sh
+	make install
+	poetry run python3 page_analyzer/tables_creation.py
+
