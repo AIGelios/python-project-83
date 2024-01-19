@@ -1,19 +1,13 @@
-from flask import Flask, render_template, redirect, url_for, request
-
 import os
 from dotenv import load_dotenv
-'''
-import psycopg2
-from psycopg2.extras import NamedTupleCursor
-'''
-from psycopg2.errors import UniqueViolation
-from requests import get as make_http_request
+
+import requests
+from flask import Flask, render_template, redirect, url_for, request
 from requests.exceptions import RequestException
+from psycopg2.errors import UniqueViolation
 
 from .url_processing import normalize_url, validate_url
-
 from .db_connections import exec_query
-
 from .service_module import (
     error_alert,
     info_alert,
@@ -23,12 +17,12 @@ from .service_module import (
 )
 from .db_queries import (
     get_all_urls_query,
-    add_url_query,
     get_id_by_url_query,
-    get_url_data_by_id_query,
-    add_check_query,
-    get_checks_by_url_id,
     get_url_by_id_query,
+    get_url_data_by_id_query,
+    get_checks_by_url_id,
+    add_url_query,
+    add_check_query,
 )
 
 app = Flask(__name__)
@@ -99,7 +93,7 @@ def add_check(id):
     query = get_url_by_id_query(id)
     url = exec_query(query)[0].name
     try:
-        response = make_http_request(url, timeout=(3.05, 10))
+        response = requests.get(url, timeout=(3.05, 10))
         response.raise_for_status()
         status_code = response.status_code
         done_alert('Страница успешно проверена')
