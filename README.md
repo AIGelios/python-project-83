@@ -11,22 +11,22 @@ Page Analyzer - a web service that analyzes the specified pages for SEO suitabil
 
 ### Setup and usage:
 How to install:
-'''
+```
 git clone git@github.com:AIGelios/python-project-83.git
 cd python-project-83
 make install
-'''
+```
 
 How to confugure database:
-'''
+```
 nano .env
-'''
+```
 create 2 environment variables inside the .env file:
-'''
+```
 DATABASE_URL=postgresql://(your database link)
 SECRET_KEY=(your secret key for flask app)
-'''
+```
 ### Launch the app:
-'''
+```
 make start
-''' 
+``` 
