@@ -35,23 +35,6 @@ app = Flask(__name__)
 
 load_dotenv()
 app.secret_key = os.getenv('SECRET_KEY')
-'''
-DATABASE_URL = os.getenv('DATABASE_URL')
-
-
-def make_connection():
-    return psycopg2.connect(DATABASE_URL)
-
-
-def exec_query(query, with_data_return=True):
-    with make_connection() as conn:
-        cursor = conn.cursor(cursor_factory=NamedTupleCursor)
-        cursor.execute(query)
-        if with_data_return:
-            data = cursor.fetchall()
-        cursor.close()
-    return data if with_data_return else None
-'''
 
 
 @app.route('/')
@@ -79,7 +62,7 @@ def add_url():
             'index.html',
             url=url_string,
             messages=get_alerts(),
-        )
+        ), 422
     url = normalize_url(url_string)
     try:
         query = add_url_query(url)
