@@ -7,7 +7,6 @@ from requests.exceptions import RequestException
 from psycopg2.errors import UniqueViolation
 
 from .url_processing import normalize_url, validate_url
-from .db_connections import exec_query
 from .service_module import (
     error_alert,
     info_alert,
@@ -19,10 +18,10 @@ from .db_queries import (
     get_all_urls,
     add_new_url,
     get_url_id_by_name,
-    get_url_by_id_query,
-    get_url_data_by_id_query,
+    get_url_by_id,
     get_checks_by_url_id,
-    add_check_query,
+    get_url_name_by_id,
+    add_new_check,
 )
 
 app = Flask(__name__)
@@ -70,28 +69,24 @@ def add_url():
 @app.get('/urls/<int:id>')
 def get_url(id):
     ''' url page constructor '''
-    query = get_url_data_by_id_query(id)
-    data = exec_query(query)
-    if data:
-        url = data[0]
-        query = get_checks_by_url_id(id)
-        checks = exec_query(query)
-        return render_template(
-            'url.html',
-            url=url,
-            checks=checks,
-            messages=get_alerts(),
-        )
-    return render_template('page_not_found.html'), 404
+    url = get_url_by_id(id)
+    if not url:
+        return render_template('page_not_found.html'), 404
+    checks = get_checks_by_url_id(id)
+    return render_template(
+        'url.html',
+        url=url,
+        checks=checks,
+        messages=get_alerts(),
+    )
 
 
 @app.post('/urls/<int:id>/checks')
 def add_check(id):
     ''' add check of url to database and redirect to url page '''
-    query = get_url_by_id_query(id)
-    url = exec_query(query)[0].name
+    url_name = get_url_name_by_id(id)
     try:
-        response = requests.get(url, timeout=(3.05, 10))
+        response = requests.get(url_name, timeout=(3.05, 10))
         response.raise_for_status()
         status_code = response.status_code
         done_alert('Страница успешно проверена')
@@ -99,6 +94,5 @@ def add_check(id):
         error_alert('Произошла ошибка при проверке')
         return redirect(url_for('get_url', id=id))
     h1, title, description = get_seo_data(response.text)
-    query = add_check_query(id, h1, title, description, status_code)
-    exec_query(query, fetch_data=False)
+    add_new_check(id, h1, title, description, status_code)
     return redirect(url_for('get_url', id=id))
