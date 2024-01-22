@@ -39,8 +39,5 @@ db-start:
 db-stop:
 	sudo service postgresql stop
 
-create-tables:
-	poetry run 
-
 build:
 	./build.sh
