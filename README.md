@@ -9,6 +9,7 @@ https://page-analyzer-nvps.onrender.com
 ### About:
 Page Analyzer - a web service that analyzes the specified pages for SEO suitability
 
+
 ### Setup and usage:
 How to install:
 ```
@@ -30,3 +31,7 @@ SECRET_KEY=(your secret key for flask app)
 ```
 make start
 ``` 
+### Screenshots:
+![homepage](/images/main.PNG)
+![urls page](/images/urls.png)
+![url page](/images/url.png)
