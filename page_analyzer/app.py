@@ -66,8 +66,6 @@ def add_url():
 @app.get('/urls/<int:id>')
 def get_url(id):
     url = get_url_by_id(id)
-    if not url:
-        return render_template('page_not_found.html'), 404
     checks = get_checks_by_url_id(id)
     return render_template(
         'url.html',
@@ -87,3 +85,13 @@ def add_check(id):
     except request_error:
         flash('Произошла ошибка при проверке', 'alert-danger')
     return redirect(url_for('get_url', id=id))
+
+
+@app.errorhandler(404)
+def not_found(error):
+    return render_template('error404.html'), 404
+
+
+@app.errorhandler(500)
+def parsing_error(error):
+    return render_template('error500.html'), 500
