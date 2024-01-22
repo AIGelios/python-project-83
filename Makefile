@@ -15,7 +15,6 @@ selfcheck:
 
 check: selfcheck test lint
 
-
 .PHONY: install test lint selfcheck check build
 
 dev:
@@ -28,7 +27,6 @@ PORT ?= 8000
 
 start:
 	poetry run gunicorn -w 5 -b 0.0.0.0:$(PORT) page_analyzer:app
-
 
 db-status:
 	sudo service postgresql status

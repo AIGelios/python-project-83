@@ -1,4 +1,5 @@
 from .service_module import get_current_timestamp
+from .db_connections import exec_query
 
 
 def get_all_urls_query():
@@ -13,6 +14,11 @@ def get_all_urls_query():
         WHERE url_id = urls.id)
         ORDER BY urls.id;
     """
+
+
+def get_all_urls():
+    query = get_all_urls_query()
+    return exec_query(query)
 
 
 def add_url_query(url):

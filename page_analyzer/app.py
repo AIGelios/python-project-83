@@ -16,7 +16,7 @@ from .service_module import (
     get_seo_data,
 )
 from .db_queries import (
-    get_all_urls_query,
+    get_all_urls,
     get_id_by_url_query,
     get_url_by_id_query,
     get_url_data_by_id_query,
@@ -40,8 +40,7 @@ def index():
 @app.get('/urls')
 def get_urls():
     ''' urls page constructor '''
-    query = get_all_urls_query()
-    urls = exec_query(query)
+    urls = get_all_urls()
     return render_template('urls.html', urls=urls)
 
 
