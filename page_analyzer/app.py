@@ -79,8 +79,8 @@ def get_url(id):
 def add_check(id):
     url_name = get_url_name_by_id(id)
     try:
-        seo_data = (id, ) + get_seo_data(url_name)
-        add_new_check(*seo_data)
+        h1, title, description, status_code = get_seo_data(url_name)
+        add_new_check(id, h1, title, description, status_code)
         flash('Страница успешно проверена', 'alert-success')
     except request_error:
         flash('Произошла ошибка при проверке', 'alert-danger')
