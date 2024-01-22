@@ -24,6 +24,9 @@ from .db_queries import (
     add_url_query,
     add_check_query,
 )
+from .db_interface import (
+    get_all_urls,
+)
 
 app = Flask(__name__)
 
@@ -33,15 +36,14 @@ app.secret_key = os.getenv('SECRET_KEY')
 
 @app.route('/')
 def index():
-    ''' main page constructor '''
+    '''  main page constructor  '''
     return render_template('index.html')
 
 
 @app.get('/urls')
 def get_urls():
-    ''' urls page constructor '''
-    query = get_all_urls_query()
-    urls = exec_query(query)
+    '''  urls page constructor  '''
+    urls = get_all_urls()
     return render_template('urls.html', urls=urls)
 
 
