@@ -12,11 +12,10 @@ def make_connection():
     return psycopg2.connect(DATABASE_URL)
 
 
-def exec_query(query, with_data_return=True):
+def exec_query(query, fetch_data=True):
     with make_connection() as conn:
         cursor = conn.cursor(cursor_factory=NamedTupleCursor)
         cursor.execute(query)
-        if with_data_return:
-            data = cursor.fetchall()
+        data = cursor.fetchall() if fetch_data else None
         cursor.close()
-    return data if with_data_return else None
+    return data

@@ -17,11 +17,11 @@ from .service_module import (
 )
 from .db_queries import (
     get_all_urls,
-    get_id_by_url_query,
+    add_new_url,
+    get_url_id_by_name,
     get_url_by_id_query,
     get_url_data_by_id_query,
     get_checks_by_url_id,
-    add_url_query,
     add_check_query,
 )
 
@@ -48,7 +48,8 @@ def get_urls():
 def add_url():
     ''' add new url to database and redirect to url page '''
     url_string = request.form.get('url')
-    if (errors := validate_url(url_string)):
+    errors = validate_url(url_string)
+    if errors:
         for error in errors:
             error_alert(error)
         return render_template(
@@ -56,15 +57,13 @@ def add_url():
             url=url_string,
             messages=get_alerts(),
         ), 422
-    url = normalize_url(url_string)
+    url_name = normalize_url(url_string)
     try:
-        query = add_url_query(url)
-        exec_query(query, False)
+        add_new_url(url_name)
         done_alert('Страница успешно добавлена')
     except UniqueViolation:
         info_alert('Страница уже существует')
-    query = get_id_by_url_query(url)
-    id = exec_query(query)[0].id
+    id = get_url_id_by_name(url_name)
     return redirect(url_for('get_url', id=id))
 
 
@@ -101,5 +100,5 @@ def add_check(id):
         return redirect(url_for('get_url', id=id))
     h1, title, description = get_seo_data(response.text)
     query = add_check_query(id, h1, title, description, status_code)
-    exec_query(query, False)
+    exec_query(query, fetch_data=False)
     return redirect(url_for('get_url', id=id))

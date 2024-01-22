@@ -1,9 +1,10 @@
-from .service_module import get_current_timestamp
 from .db_connections import exec_query
+from datetime import datetime
 
 
-def get_all_urls_query():
-    return """SELECT
+# ---------------------------------------------------------
+def get_all_urls():
+    query = """SELECT
         urls.id, urls.name,
         url_checks.status_code,
         url_checks.created_at
@@ -14,35 +15,37 @@ def get_all_urls_query():
         WHERE url_id = urls.id)
         ORDER BY urls.id;
     """
-
-
-def get_all_urls():
-    query = get_all_urls_query()
     return exec_query(query)
 
 
-def add_url_query(url):
-    return f"""
-    INSERT INTO urls (name, created_at)
-    VALUES ('{url}', '{get_current_timestamp()}');
+# ---------------------------------------------------------
+def add_new_url(url_name):
+    query = f"""
+        INSERT INTO urls (name, created_at)
+        VALUES ('{url_name}', '{datetime.now()}');
     """
+    exec_query(query, fetch_data=False)
 
 
-def get_id_by_url_query(name):
-    return f"SELECT id FROM urls WHERE name = '{name}';"
+# ---------------------------------------------------------
+def get_url_id_by_name(url_name):
+    query = f"SELECT id FROM urls WHERE name = '{url_name}';"
+    return exec_query(query)[0].id
 
 
+# ---------------------------------------------------------
 def get_url_data_by_id_query(id):
     return f"SELECT * FROM urls WHERE id = {id}"
 
 
+# ---------------------------------------------------------
 def add_check_query(id, h1, title, description, status_code):
     return f"""
         INSERT INTO url_checks (
         url_id, h1, title, description, status_code, created_at)
         VALUES (
         {id}, '{h1}', '{title}', '{description}', {status_code},
-        '{get_current_timestamp()}');
+        '{datetime.now()}');
     """
 
 

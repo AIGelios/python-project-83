@@ -1,10 +1,5 @@
-from datetime import datetime
 from flask import flash, get_flashed_messages
 from bs4 import BeautifulSoup
-
-
-def get_current_timestamp():
-    return datetime.now()
 
 
 def error_alert(message):
