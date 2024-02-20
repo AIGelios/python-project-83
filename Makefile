@@ -4,6 +4,9 @@ install:
 test:
 	poetry run pytest
 
+coverage:
+	poetry run pytest --cov=page_analyzer
+
 test-coverage:
 	poetry run pytest --cov=page_analyzer --cov-report xml
 
